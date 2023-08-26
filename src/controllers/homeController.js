@@ -25,9 +25,29 @@ let getCrud = async (req, res) => {
     dataTable: data,
   });
 };
+let getEditCrud = async (req, res) => {
+  console.log(req.query.id);
+  let userId = req.query.id;
+  if (userId) {
+    let userData = await crudService.getUserInforById(userId);
+    console.log(`user with id ${userId}: `, userData);
+    return res.render("editCRUD.ejs", { user: userData });
+  } else {
+    return res.send("user not found");
+  }
+};
+
+let putCrud = async (req, res) => {
+  let data = req.body;
+  await crudService.updateUserData(data);
+  return res.redirect("/get-crud");
+};
+
 module.exports = {
   getHomePage: getHomePage,
   getCrudPage: getCrudPage,
   postCrud: postCrud,
   getCrud: getCrud,
+  getEditCrud: getEditCrud,
+  putCrud: putCrud,
 };
